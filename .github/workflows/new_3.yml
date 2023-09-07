@@ -19,7 +19,7 @@ jobs:
         - run: java app.java
         - run: |
             java -version > version.txt
-            which java > which.txt
+            echo JAVA_HOME > which.txt
         - run: |
             cat version.txt
             cat which.txt
@@ -42,7 +42,7 @@ jobs:
       - name: declare_var
         run: |
           variable=$(cat which.txt)
-          echo "output_variable = $(echo $variable) " >> $GITHUB_ENV
+          echo "output_variable = $(echo $variable)" >> $GITHUB_ENV
 
       - name: Test
         run: echo ${{ env.output_variable }}
