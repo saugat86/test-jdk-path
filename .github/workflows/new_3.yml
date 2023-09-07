@@ -4,30 +4,30 @@ on: [push]
 
 jobs:
   phase_i:
-    name: Exporting Path
-    runs-on: ubuntu-latest
-    steps: 
-      - shell: bash
-        run: |
-          echo "Hello World"
+      name: Exporting Path
+      runs-on: ubuntu-latest
+      steps: 
+        - shell: bash
+          run: |
+            echo "Hello World"
             
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - run: java app.java
-      - run: |
-          java -version > version.txt
-          which java > which.txt
-      - run: |
-          cat version.txt
-          cat which.txt
-      - name: Upload txt
-        uses: actions/upload-artifact@v3
-        with:
-          name: java path
-          path: which.txt
+        - uses: actions/checkout@v3
+        - uses: actions/setup-java@v3
+          with:
+            distribution: 'temurin'
+            java-version: '17'
+        - run: java app.java
+        - run: |
+            java -version > version.txt
+            which java > which.txt
+        - run: |
+            cat version.txt
+            cat which.txt
+        - name: Upload txt
+          uses: actions/upload-artifact@v3
+          with:
+            name: java path
+            path: which.txt
 
   phase_ii:
     name: Importing Path
@@ -42,5 +42,7 @@ jobs:
       - name: declare_var
         run: |
           variable=$(cat which.txt)
-          echo "$variable"
-  
+          echo "output_variable = $(echo $variable) " >> $GITHUB_ENV
+
+      - name: Test
+        run: echo ${{ env.output_variable }}
